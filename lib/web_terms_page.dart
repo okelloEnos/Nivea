@@ -291,7 +291,7 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                           right: 0,
                           child: Container(
                             width: double.infinity,
-                            height: 100,
+                            height: 86,
                             decoration: BoxDecoration(
                                 color: hideColor,
                               border: Border.all(color: hideColor)
@@ -304,8 +304,9 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                           child: Container(
                             width: double.infinity,
                             height: 140,
-                            decoration: const BoxDecoration(
-                                color: hideColor
+                            decoration: BoxDecoration(
+                                color: hideColor,
+                                border: Border.all(color: hideColor)
                             ),
                           )),
                       Positioned(
@@ -722,7 +723,7 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       right: 0,
                       child: Container(
                         width: double.infinity,
-                        height: MediaQuery.sizeOf(context).height * 0.30,
+                        height: MediaQuery.sizeOf(context).height * 0.28,
                         decoration: const BoxDecoration(
                             color: hideColor
                         ),
