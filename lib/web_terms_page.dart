@@ -292,32 +292,10 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       : Container(),
                   Positioned(
                       top: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        width: double.infinity,
-                        height: 86,
-                        decoration: BoxDecoration(
-                            color: hideColor,
-                            border: Border.all(color: hideColor)),
-                      )),
-                  Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        width: double.infinity,
-                        height: 140,
-                        decoration: BoxDecoration(
-                            color: hideColor,
-                            border: Border.all(color: hideColor)),
-                      )),
-                  Positioned(
-                      top: 0,
                       bottom: 0,
                       right: 0,
                       child: Container(
-                        width: 8,
+                        width: 16,
                         height: double.infinity,
                         decoration: const BoxDecoration(color: hideColor),
                       )),
@@ -329,7 +307,70 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                         width: 8,
                         height: double.infinity,
                         decoration: const BoxDecoration(color: hideColor),
-                      ))
+                      )),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 87,
+                        decoration: BoxDecoration(
+                            color: hideColor,
+                            border: Border.all(color: hideColor)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SvgPicture.asset('assets/images/logo.svg',
+                                  width: 32.0, height: 32.0),
+                              const Text(
+                                "AI Skin Scanner",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "DM Sans",
+                                    color: Colors.black),
+                              )
+                            ],
+                          ),
+                        ),
+                      )),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 152,
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Color(0XFFF4F4F4),
+                                spreadRadius: 0,
+                                blurRadius: 16,
+                                offset: Offset(0, -6)
+                            )
+                          ],
+                            color: hideColor,
+                            border: Border.all(color: hideColor)),
+                        child: const Padding(
+                          padding: EdgeInsets.only(bottom: 0.0, right: 16.0, left: 16.0),
+                          child: Center(
+                            child: Text(
+                              "Please note: This product is solely for demo purposes and does not reflect actual requirements. Final specifications will be gathered to meet your specific needs.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "DM Sans",
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
                 ],
               ),
             )),
@@ -440,12 +481,48 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       : Container(),
                   Positioned(
                       top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 16,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      child: Container(
+                        width: 8,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
                       left: 0,
                       right: 0,
                       child: Container(
                         width: double.infinity,
                         height: 200,
                         decoration: const BoxDecoration(color: hideColor),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SvgPicture.asset('assets/images/logo.svg',
+                                  width: 32.0, height: 32.0),
+                              const Text(
+                                "AI Skin Scanner",
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "DM Sans",
+                                    color: Colors.black),
+                              )
+                            ],
+                          ),
+                        ),
                       )),
                   Positioned(
                       bottom: 0,
@@ -455,16 +532,22 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                         width: double.infinity,
                         height: 290,
                         decoration: const BoxDecoration(color: hideColor),
+                        child: const Padding(
+                          padding: EdgeInsets.only(bottom: 0.0, right: 32.0, left: 32.0),
+                          child: Center(
+                            child: Text(
+                              "Please note: This product is solely for demo purposes and does not reflect actual requirements. Final specifications will be gathered to meet your specific needs.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "DM Sans",
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
                       )),
-                  Positioned(
-                      top: 0,
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 15,
-                        height: double.infinity,
-                        decoration: const BoxDecoration(color: hideColor),
-                      ))
                 ],
               ),
             )),
@@ -575,12 +658,48 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       : Container(),
                   Positioned(
                       top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 16,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      child: Container(
+                        width: 8,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
                       left: 0,
                       right: 0,
                       child: Container(
                         width: double.infinity,
                         height: 200,
                         decoration: const BoxDecoration(color: hideColor),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SvgPicture.asset('assets/images/logo.svg',
+                                  width: 36.0, height: 36.0),
+                              const Text(
+                                "AI Skin Scanner",
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "DM Sans",
+                                    color: Colors.black),
+                              )
+                            ],
+                          ),
+                        ),
                       )),
                   Positioned(
                       bottom: 0,
@@ -590,16 +709,22 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                         width: double.infinity,
                         height: 210,
                         decoration: const BoxDecoration(color: hideColor),
+                          child: const Padding(
+                            padding: EdgeInsets.only(bottom: 0.0, right: 32.0, left: 32.0),
+                            child: Center(
+                              child: Text(
+                                "Please note: This product is solely for demo purposes and does not reflect actual requirements. Final specifications will be gathered to meet your specific needs.",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "DM Sans",
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
                       )),
-                  Positioned(
-                      top: 0,
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 15,
-                        height: double.infinity,
-                        decoration: const BoxDecoration(color: hideColor),
-                      ))
                 ],
               ),
             )),
@@ -734,38 +859,56 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                         width: double.infinity,
                         height: 180,
                         decoration: const BoxDecoration(color: hideColor),
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SvgPicture.asset('assets/images/logo.svg',
-                                        width: 40.0, height: 40.0),
-                                    const Text(
-                                      "AI Skin Scanner",
-                                      style: TextStyle(
-                                          fontSize: 24.0,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "DM Sans",
-                                          color: Colors.black),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 24.0,),
-                              const Divider(
-                                color: Color(0XFFF4F4F4),
-                                thickness: 4.0,
-                              ),
+                              SvgPicture.asset('assets/images/logo.svg',
+                                  width: 40.0, height: 40.0),
+                              const Text(
+                                "AI Skin Scanner",
+                                style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "DM Sans",
+                                    color: Colors.black),
+                              )
                             ],
                           ),
                         ),
+                        // child: Center(
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     children: [
+                        //       Padding(
+                        //         padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             SvgPicture.asset('assets/images/logo.svg',
+                        //                 width: 40.0, height: 40.0),
+                        //             const Text(
+                        //               "AI Skin Scanner",
+                        //               style: TextStyle(
+                        //                   fontSize: 24.0,
+                        //                   fontWeight: FontWeight.w700,
+                        //                   fontFamily: "DM Sans",
+                        //                   color: Colors.black),
+                        //             )
+                        //           ],
+                        //         ),
+                        //       ),
+                        //       const SizedBox(height: 24.0,),
+                        //       const Divider(
+                        //         color: Color(0XFFF4F4F4),
+                        //         thickness: 4.0,
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       )),
                   Positioned(
                       bottom: 0,
@@ -773,7 +916,7 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       right: 0,
                       child: Container(
                         width: double.infinity,
-                        height: MediaQuery.sizeOf(context).height * 0.28,
+                        height: MediaQuery.sizeOf(context).height * 0.26,
                         decoration: const BoxDecoration(color: hideColor),
                         child: const Padding(
                           padding: EdgeInsets.only(bottom: 0.0, right: 32.0, left: 32.0),
