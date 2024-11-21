@@ -1,11 +1,11 @@
 {
-    "name": "nivea",
-    "short_name": "nivea",
+    "name": "skin-scanner",
+    "short_name": "skin-scanner",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Dentsu AI Skin Scanner Demo",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

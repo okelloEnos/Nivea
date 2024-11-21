@@ -18,7 +18,7 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Dentsu Skin Scanner Demo.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -39,8 +39,271 @@
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
   <script type="application/javascript" src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
+<!--  <style>-->
+<!--    body {background-color: #ffffff;}-->
+<!--    .loading {-->
+<!--    display: flex;-->
+<!--    justify-content: center;-->
+<!--    align-items: center;-->
+<!--    margin: 0;-->
+<!--    position: absolute;-->
+<!--    top: 50%;-->
+<!--    left: 50%;-->
+<!--    -ms-transform: translate(-50%, -50%);-->
+<!--    transform: translate(-50%, -50%);-->
+<!--  }-->
+<!--    .loader {-->
+<!--  box-sizing: border-box;-->
+<!--  position: relative;-->
+<!--  width: 48px;-->
+<!--  height: 48px;-->
+<!--  animation: spin 1s linear infinite;-->
+<!--}-->
+<!--.loader:after, .loader:before {-->
+<!--  content: "";-->
+<!--  width: 24px;-->
+<!--  height: 24px;-->
+<!--  position: absolute;-->
+<!--  border-radius: 50%;-->
+<!--  background: #ED1C24;-->
+<!--  animation: spin 1s linear infinite;-->
+<!--  transform-origin: 0px 100%;-->
+<!--}-->
+<!--.loader:before {-->
+<!--  transform-origin: 0 50%;-->
+<!--  background: #007DC3;-->
+<!--}-->
+<!--@keyframes spin {-->
+<!--  to {-->
+<!--    transform: rotate(360deg);-->
+<!--  }-->
+<!--}-->
+
+
+<!--  </style>-->
+
+
+<!--  <style>-->
+<!--    .loading {-->
+<!--      display: flex;-->
+<!--      justify-content: center;-->
+<!--      align-items: center;-->
+<!--      height: 100vh;-->
+<!--      background-color: #ffffff;-->
+<!--    }-->
+<!--    .pulse-loader {-->
+<!--      width: 20px;-->
+<!--      height: 20px;-->
+<!--      margin: 0 5px;-->
+<!--      background-color: #007DC3;-->
+<!--      border-radius: 50%;-->
+<!--      animation: pulse 1.2s infinite ease-in-out;-->
+<!--    }-->
+<!--    .pulse-loader:nth-child(2) {-->
+<!--      animation-delay: 0.2s;-->
+<!--    }-->
+<!--    .pulse-loader:nth-child(3) {-->
+<!--      animation-delay: 0.4s;-->
+<!--    }-->
+<!--    @keyframes pulse {-->
+<!--      0%, 80%, 100% {-->
+<!--        transform: scale(0);-->
+<!--      }-->
+<!--      40% {-->
+<!--        transform: scale(1);-->
+<!--      }-->
+<!--    }-->
+<!--  </style>-->
+
+  <style>
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #ffffff;
+    }
+    .ripple-loader {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+    .ripple-loader div {
+      position: absolute;
+      border: 4px solid #000000;
+      border-radius: 50%;
+      animation: ripple 1.2s infinite ease-out;
+    }
+    .ripple-loader div:nth-child(2) {
+      animation-delay: -0.6s;
+    }
+    @keyframes ripple {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+      100% {
+        width: 64px;
+        height: 64px;
+        opacity: 0;
+      }
+    }
+  </style>
+
+<!--  <style>-->
+<!--    .loading {-->
+<!--      display: flex;-->
+<!--      justify-content: center;-->
+<!--      align-items: center;-->
+<!--      height: 100vh;-->
+<!--      background-color: #ffffff;-->
+<!--    }-->
+<!--    .spinning-dots {-->
+<!--      width: 48px;-->
+<!--      height: 48px;-->
+<!--      position: relative;-->
+<!--    }-->
+<!--    .spinning-dots div {-->
+<!--      position: absolute;-->
+<!--      width: 8px;-->
+<!--      height: 8px;-->
+<!--      background-color: #ED1C24;-->
+<!--      border-radius: 50%;-->
+<!--      animation: spinning-dots 1.2s linear infinite;-->
+<!--    }-->
+<!--    .spinning-dots div:nth-child(1) {-->
+<!--      top: 0;-->
+<!--      left: 50%;-->
+<!--      animation-delay: 0s;-->
+<!--    }-->
+<!--    .spinning-dots div:nth-child(2) {-->
+<!--      top: 50%;-->
+<!--      left: 100%;-->
+<!--      animation-delay: 0.3s;-->
+<!--    }-->
+<!--    .spinning-dots div:nth-child(3) {-->
+<!--      top: 100%;-->
+<!--      left: 50%;-->
+<!--      animation-delay: 0.6s;-->
+<!--    }-->
+<!--    .spinning-dots div:nth-child(4) {-->
+<!--      top: 50%;-->
+<!--      left: 0;-->
+<!--      animation-delay: 0.9s;-->
+<!--    }-->
+<!--    @keyframes spinning-dots {-->
+<!--      0%, 100% {-->
+<!--        transform: scale(0.5);-->
+<!--      }-->
+<!--      50% {-->
+<!--        transform: scale(1);-->
+<!--      }-->
+<!--    }-->
+<!--  </style>-->
+
+<!--  <style>-->
+<!--    .loading {-->
+<!--      display: flex;-->
+<!--      justify-content: center;-->
+<!--      align-items: center;-->
+<!--      height: 100vh;-->
+<!--      background-color: #ffffff;-->
+<!--    }-->
+<!--    .bouncing-loader div {-->
+<!--      width: 16px;-->
+<!--      height: 16px;-->
+<!--      margin: 0 5px;-->
+<!--      background-color: #007DC3;-->
+<!--      border-radius: 50%;-->
+<!--      animation: bounce 0.6s infinite alternate;-->
+<!--    }-->
+<!--    .bouncing-loader div:nth-child(2) {-->
+<!--      animation-delay: 0.2s;-->
+<!--    }-->
+<!--    .bouncing-loader div:nth-child(3) {-->
+<!--      animation-delay: 0.4s;-->
+<!--    }-->
+<!--    @keyframes bounce {-->
+<!--      to {-->
+<!--        transform: translateY(-20px);-->
+<!--      }-->
+<!--    }-->
+<!--  </style>-->
+
+<!--  <style>-->
+<!--    .loading {-->
+<!--      display: flex;-->
+<!--      justify-content: center;-->
+<!--      align-items: center;-->
+<!--      height: 100vh;-->
+<!--      background-color: #ffffff;-->
+<!--    }-->
+<!--    .rotating-square {-->
+<!--      width: 50px;-->
+<!--      height: 50px;-->
+<!--      background-color: #ED1C24;-->
+<!--      animation: rotate-square 1.5s infinite ease-in-out;-->
+<!--    }-->
+<!--    @keyframes rotate-square {-->
+<!--      0%, 100% {-->
+<!--        transform: rotate(0);-->
+<!--      }-->
+<!--      50% {-->
+<!--        transform: rotate(180deg);-->
+<!--      }-->
+<!--    }-->
+<!--  </style>-->
+
+
 </head>
 <body>
+<!-- First time loading -->
+<!--<div class="loading">-->
+<!--  <div class="loader"></div>-->
+<!--</div>-->
+
+<!--<div class="loading">-->
+<!--  <div class="pulse-loader"></div>-->
+<!--  <div class="pulse-loader"></div>-->
+<!--  <div class="pulse-loader"></div>-->
+<!--</div>-->
+
+<div class="loading">
+  <div class="ripple-loader">
+    <div></div>
+    <div></div>
+  </div>
+</div>
+
+<!--<div class="loading">-->
+<!--  <div class="spinning-dots">-->
+<!--    <div></div>-->
+<!--    <div></div>-->
+<!--    <div></div>-->
+<!--    <div></div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="loading">-->
+<!--  <div class="bouncing-loader">-->
+<!--    <div></div>-->
+<!--    <div></div>-->
+<!--    <div></div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="loading">-->
+<!--  <div class="rotating-square"></div>-->
+<!--</div>-->
+
+<!-- Ensure first time loading progress is gone after app loads -->
+<script>
+  window.addEventListener("flutter-first-frame", function() {
+      var element = document.getElementsByClassName("loader");
+      element[0].parentNode.removeChild(element[0]);
+  });
+</script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js

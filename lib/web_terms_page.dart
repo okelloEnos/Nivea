@@ -2,11 +2,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dentsu_skin_scanner/responsive_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:nivea/responsive_widget.dart';
+import 'package:flutter_svg/svg.dart';
+// import 'package:nivea/responsive_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 
@@ -24,11 +26,11 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
 
   InAppWebViewController? webViewController;
   InAppWebViewSettings settings = InAppWebViewSettings(
-      isInspectable: kDebugMode,
-      mediaPlaybackRequiresUserGesture: false,
-      allowsInlineMediaPlayback: true,
-      iframeAllow: "camera; microphone",
-      iframeAllowFullscreen: true,
+    isInspectable: kDebugMode,
+    mediaPlaybackRequiresUserGesture: false,
+    allowsInlineMediaPlayback: true,
+    iframeAllow: "camera; microphone",
+    iframeAllowFullscreen: true,
     disableHorizontalScroll: true,
     disableVerticalScroll: true,
     supportZoom: false,
@@ -67,7 +69,7 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
     const Color hideColor = Colors.white;
     return ResponsiveWidget(
         mobile: Scaffold(
-        body: ScrollConfiguration(
+            body: ScrollConfiguration(
           behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
           child: Stack(
             children: [
@@ -160,7 +162,9 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                   }
                 },
               ),
-              progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
+              progress < 1.0
+                  ? LinearProgressIndicator(value: progress)
+                  : Container(),
               Positioned(
                   top: 0,
                   left: 0,
@@ -168,9 +172,7 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                   child: Container(
                     width: double.infinity,
                     height: 55,
-                    decoration: const BoxDecoration(
-                        color: hideColor
-                    ),
+                    decoration: const BoxDecoration(color: hideColor),
                   )),
               Positioned(
                   bottom: 0,
@@ -179,9 +181,7 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                   child: Container(
                     width: double.infinity,
                     height: 70,
-                    decoration: const BoxDecoration(
-                        color: hideColor
-                    ),
+                    decoration: const BoxDecoration(color: hideColor),
                   ))
             ],
           ),
@@ -189,426 +189,8 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
         desktop: ResponsiveLayoutWidget(
             small: Scaffold(
                 body: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                  child: Stack(
-                    children: [
-                      InAppWebView(
-                        key: webViewKey,
-                        initialUrlRequest: URLRequest(url: WebUri(widget.link)),
-                        initialSettings: settings,
-                        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                          Factory<OneSequenceGestureRecognizer>(
-                                () => EagerGestureRecognizer(), // Disables all scrolling gestures
-                          ),
-                        },
-                        pullToRefreshController: pullToRefreshController,
-                        onWebViewCreated: (controller) {
-                          webViewController = controller;
-                        },
-                        onLoadStart: (controller, url) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onPermissionRequest: (controller, request) async {
-                          return PermissionResponse(
-                              resources: request.resources,
-                              action: PermissionResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading: (controller, navigationAction) async {
-                          var uri = navigationAction.request.url!;
-
-                          if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about"
-                          ].contains(uri.scheme)) {
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(
-                                uri,
-                              );
-                              return NavigationActionPolicy.CANCEL;
-                            }
-                          }
-
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          pullToRefreshController?.endRefreshing();
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-
-                          if (url.toString() ==
-                              "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
-                            await controller.evaluateJavascript(source: """
-                document.querySelector('button').click();
-              """);
-                          }
-                        },
-                        onReceivedError: (controller, request, error) {
-                          pullToRefreshController?.endRefreshing();
-                        },
-                        onProgressChanged: (controller, progress) {
-                          if (progress == 100) {
-                            pullToRefreshController?.endRefreshing();
-                          }
-                          setState(() {
-                            this.progress = progress / 100;
-                            urlController.text = url;
-                          });
-                        },
-                        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onConsoleMessage: (controller, consoleMessage) async {
-                            if (consoleMessage.message == "window-loaded") {
-                              if (url.toString() ==
-                                  "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
-                                await controller.evaluateJavascript(source: """
-                          var button = document.querySelector('a.pf-btn.pf-black-btn.pf-square-btn');
-                          if (button) {
-                            button.click();
-                          }
-                        """);
-                              }
-                            }
-                        },
-                      ),
-                      progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            height: 86,
-                            decoration: BoxDecoration(
-                                color: hideColor,
-                              border: Border.all(color: hideColor)
-                            ),
-                          )),
-                      Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            height: 140,
-                            decoration: BoxDecoration(
-                                color: hideColor,
-                                border: Border.all(color: hideColor)
-                            ),
-                          )),
-                      Positioned(
-                          top: 0,
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 8,
-                            height: double.infinity,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          )),
-                      Positioned(
-                          top: 0,
-                          bottom: 0,
-                          left: 0,
-                          child: Container(
-                            width: 8,
-                            height: double.infinity,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          ))
-                    ],
-                  ),
-                )),
-            medium: Scaffold(
-                body: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                  child: Stack(
-                    children: [
-                      InAppWebView(
-                        key: webViewKey,
-                        initialUrlRequest: URLRequest(url: WebUri(widget.link)),
-                        initialSettings: settings,
-                        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                          Factory<OneSequenceGestureRecognizer>(
-                                () => EagerGestureRecognizer(), // Disables all scrolling gestures
-                          ),
-                        },
-                        pullToRefreshController: pullToRefreshController,
-                        onWebViewCreated: (controller) {
-                          webViewController = controller;
-                        },
-                        onLoadStart: (controller, url) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onPermissionRequest: (controller, request) async {
-                          return PermissionResponse(
-                              resources: request.resources,
-                              action: PermissionResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading: (controller, navigationAction) async {
-                          var uri = navigationAction.request.url!;
-
-                          if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about"
-                          ].contains(uri.scheme)) {
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(
-                                uri,
-                              );
-                              return NavigationActionPolicy.CANCEL;
-                            }
-                          }
-
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          pullToRefreshController?.endRefreshing();
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-
-                          if (url.toString() ==
-                              "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
-                            await controller.evaluateJavascript(source: """
-                document.querySelector('button').click();
-              """);
-                          }
-                        },
-                        onReceivedError: (controller, request, error) {
-                          pullToRefreshController?.endRefreshing();
-                        },
-                        onProgressChanged: (controller, progress) {
-                          if (progress == 100) {
-                            pullToRefreshController?.endRefreshing();
-                          }
-                          setState(() {
-                            this.progress = progress / 100;
-                            urlController.text = url;
-                          });
-                        },
-                        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onConsoleMessage: (controller, consoleMessage) async {
-                          if (kDebugMode) {
-                            if (consoleMessage.message == "window-loaded") {
-                              if (url.toString() ==
-                                  "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
-                                await controller.evaluateJavascript(source: """
-                          var button = document.querySelector('a.pf-btn.pf-black-btn.pf-square-btn');
-                          if (button) {
-                            button.click();
-                          }
-                        """);
-                              }
-                            }
-                          }
-                        },
-                      ),
-                      progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            height: 200,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          )),
-                      Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            height: 290,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          )),
-                      Positioned(
-                          top: 0,
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 15,
-                            height: double.infinity,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          ))
-                    ],
-                  ),
-                )),
-            medium2: Scaffold(
-                body: ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                  child: Stack(
-                    children: [
-                      InAppWebView(
-                        key: webViewKey,
-                        initialUrlRequest: URLRequest(url: WebUri(widget.link)),
-                        initialSettings: settings,
-                        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                          Factory<OneSequenceGestureRecognizer>(
-                                () => EagerGestureRecognizer(), // Disables all scrolling gestures
-                          ),
-                        },
-                        pullToRefreshController: pullToRefreshController,
-                        onWebViewCreated: (controller) {
-                          webViewController = controller;
-                        },
-                        onLoadStart: (controller, url) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onPermissionRequest: (controller, request) async {
-                          return PermissionResponse(
-                              resources: request.resources,
-                              action: PermissionResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading: (controller, navigationAction) async {
-                          var uri = navigationAction.request.url!;
-
-                          if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about"
-                          ].contains(uri.scheme)) {
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(
-                                uri,
-                              );
-                              return NavigationActionPolicy.CANCEL;
-                            }
-                          }
-
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          pullToRefreshController?.endRefreshing();
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-
-                          if (url.toString() ==
-                              "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
-                            await controller.evaluateJavascript(source: """
-                document.querySelector('button').click();
-              """);
-                          }
-                        },
-                        onReceivedError: (controller, request, error) {
-                          pullToRefreshController?.endRefreshing();
-                        },
-                        onProgressChanged: (controller, progress) {
-                          if (progress == 100) {
-                            pullToRefreshController?.endRefreshing();
-                          }
-                          setState(() {
-                            this.progress = progress / 100;
-                            urlController.text = url;
-                          });
-                        },
-                        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onConsoleMessage: (controller, consoleMessage) async {
-                          if (kDebugMode) {
-                            if (consoleMessage.message == "window-loaded") {
-                              if (url.toString() ==
-                                  "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
-                                await controller.evaluateJavascript(source: """
-                          var button = document.querySelector('a.pf-btn.pf-black-btn.pf-square-btn');
-                          if (button) {
-                            button.click();
-                          }
-                        """);
-                              }
-                            }
-                          }
-                        },
-                      ),
-                      progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            height: 200,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          )),
-                      Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: double.infinity,
-                            height: 210,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          )),
-                      Positioned(
-                          top: 0,
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 15,
-                            height: double.infinity,
-                            decoration: const BoxDecoration(
-                                color: hideColor
-                            ),
-                          ))
-                    ],
-                  ),
-                )),
-            large: Scaffold(
-            body: ScrollConfiguration(
-              behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
               child: Stack(
                 children: [
                   InAppWebView(
@@ -617,7 +199,8 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                     initialSettings: settings,
                     gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                       Factory<OneSequenceGestureRecognizer>(
-                            () => EagerGestureRecognizer(), // Disables all scrolling gestures
+                        () =>
+                            EagerGestureRecognizer(), // Disables all scrolling gestures
                       ),
                     },
                     pullToRefreshController: pullToRefreshController,
@@ -635,7 +218,154 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                           resources: request.resources,
                           action: PermissionResponseAction.GRANT);
                     },
-                    shouldOverrideUrlLoading: (controller, navigationAction) async {
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      var uri = navigationAction.request.url!;
+
+                      if (![
+                        "http",
+                        "https",
+                        "file",
+                        "chrome",
+                        "data",
+                        "javascript",
+                        "about"
+                      ].contains(uri.scheme)) {
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(
+                            uri,
+                          );
+                          return NavigationActionPolicy.CANCEL;
+                        }
+                      }
+
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      pullToRefreshController?.endRefreshing();
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+
+                      if (url.toString() ==
+                          "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
+                        await controller.evaluateJavascript(source: """
+                document.querySelector('button').click();
+              """);
+                      }
+                    },
+                    onReceivedError: (controller, request, error) {
+                      pullToRefreshController?.endRefreshing();
+                    },
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) {
+                        pullToRefreshController?.endRefreshing();
+                      }
+                      setState(() {
+                        this.progress = progress / 100;
+                        urlController.text = url;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onConsoleMessage: (controller, consoleMessage) async {
+                      if (consoleMessage.message == "window-loaded") {
+                        if (url.toString() ==
+                            "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
+                          await controller.evaluateJavascript(source: """
+                          var button = document.querySelector('a.pf-btn.pf-black-btn.pf-square-btn');
+                          if (button) {
+                            button.click();
+                          }
+                        """);
+                        }
+                      }
+                    },
+                  ),
+                  progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container(),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 86,
+                        decoration: BoxDecoration(
+                            color: hideColor,
+                            border: Border.all(color: hideColor)),
+                      )),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 140,
+                        decoration: BoxDecoration(
+                            color: hideColor,
+                            border: Border.all(color: hideColor)),
+                      )),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 8,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      child: Container(
+                        width: 8,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      ))
+                ],
+              ),
+            )),
+            medium: Scaffold(
+                body: ScrollConfiguration(
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: Stack(
+                children: [
+                  InAppWebView(
+                    key: webViewKey,
+                    initialUrlRequest: URLRequest(url: WebUri(widget.link)),
+                    initialSettings: settings,
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                      Factory<OneSequenceGestureRecognizer>(
+                        () =>
+                            EagerGestureRecognizer(), // Disables all scrolling gestures
+                      ),
+                    },
+                    pullToRefreshController: pullToRefreshController,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                    },
+                    onLoadStart: (controller, url) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onPermissionRequest: (controller, request) async {
+                      return PermissionResponse(
+                          resources: request.resources,
+                          action: PermissionResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
                       var uri = navigationAction.request.url!;
 
                       if (![
@@ -705,7 +435,297 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       }
                     },
                   ),
-                  progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
+                  progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container(),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 290,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 15,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      ))
+                ],
+              ),
+            )),
+            medium2: Scaffold(
+                body: ScrollConfiguration(
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: Stack(
+                children: [
+                  InAppWebView(
+                    key: webViewKey,
+                    initialUrlRequest: URLRequest(url: WebUri(widget.link)),
+                    initialSettings: settings,
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                      Factory<OneSequenceGestureRecognizer>(
+                        () =>
+                            EagerGestureRecognizer(), // Disables all scrolling gestures
+                      ),
+                    },
+                    pullToRefreshController: pullToRefreshController,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                    },
+                    onLoadStart: (controller, url) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onPermissionRequest: (controller, request) async {
+                      return PermissionResponse(
+                          resources: request.resources,
+                          action: PermissionResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      var uri = navigationAction.request.url!;
+
+                      if (![
+                        "http",
+                        "https",
+                        "file",
+                        "chrome",
+                        "data",
+                        "javascript",
+                        "about"
+                      ].contains(uri.scheme)) {
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(
+                            uri,
+                          );
+                          return NavigationActionPolicy.CANCEL;
+                        }
+                      }
+
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      pullToRefreshController?.endRefreshing();
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+
+                      if (url.toString() ==
+                          "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
+                        await controller.evaluateJavascript(source: """
+                document.querySelector('button').click();
+              """);
+                      }
+                    },
+                    onReceivedError: (controller, request, error) {
+                      pullToRefreshController?.endRefreshing();
+                    },
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) {
+                        pullToRefreshController?.endRefreshing();
+                      }
+                      setState(() {
+                        this.progress = progress / 100;
+                        urlController.text = url;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onConsoleMessage: (controller, consoleMessage) async {
+                      if (kDebugMode) {
+                        if (consoleMessage.message == "window-loaded") {
+                          if (url.toString() ==
+                              "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
+                            await controller.evaluateJavascript(source: """
+                          var button = document.querySelector('a.pf-btn.pf-black-btn.pf-square-btn');
+                          if (button) {
+                            button.click();
+                          }
+                        """);
+                          }
+                        }
+                      }
+                    },
+                  ),
+                  progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container(),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 200,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: 210,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 15,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      ))
+                ],
+              ),
+            )),
+            large: Scaffold(
+                body: ScrollConfiguration(
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
+              child: Stack(
+                children: [
+                  InAppWebView(
+                    key: webViewKey,
+                    initialUrlRequest: URLRequest(url: WebUri(widget.link)),
+                    initialSettings: settings,
+                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                      Factory<OneSequenceGestureRecognizer>(
+                        () =>
+                            EagerGestureRecognizer(), // Disables all scrolling gestures
+                      ),
+                    },
+                    pullToRefreshController: pullToRefreshController,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                    },
+                    onLoadStart: (controller, url) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onPermissionRequest: (controller, request) async {
+                      return PermissionResponse(
+                          resources: request.resources,
+                          action: PermissionResponseAction.GRANT);
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      var uri = navigationAction.request.url!;
+
+                      if (![
+                        "http",
+                        "https",
+                        "file",
+                        "chrome",
+                        "data",
+                        "javascript",
+                        "about"
+                      ].contains(uri.scheme)) {
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(
+                            uri,
+                          );
+                          return NavigationActionPolicy.CANCEL;
+                        }
+                      }
+
+                      return NavigationActionPolicy.ALLOW;
+                    },
+                    onLoadStop: (controller, url) async {
+                      pullToRefreshController?.endRefreshing();
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+
+                      if (url.toString() ==
+                          "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
+                        await controller.evaluateJavascript(source: """
+                document.querySelector('button').click();
+              """);
+                      }
+                    },
+                    onReceivedError: (controller, request, error) {
+                      pullToRefreshController?.endRefreshing();
+                    },
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) {
+                        pullToRefreshController?.endRefreshing();
+                      }
+                      setState(() {
+                        this.progress = progress / 100;
+                        urlController.text = url;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onConsoleMessage: (controller, consoleMessage) async {
+                      if (kDebugMode) {
+                        if (consoleMessage.message == "window-loaded") {
+                          if (url.toString() ==
+                              "https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics") {
+                            await controller.evaluateJavascript(source: """
+                          var button = document.querySelector('a.pf-btn.pf-black-btn.pf-square-btn');
+                          if (button) {
+                            button.click();
+                          }
+                        """);
+                          }
+                        }
+                      }
+                    },
+                  ),
+                  progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container(),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 15,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: 100,
+                        height: 10,
+                        decoration: const BoxDecoration(color: hideColor),
+                      )),
                   Positioned(
                       top: 0,
                       left: 0,
@@ -713,8 +733,38 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       child: Container(
                         width: double.infinity,
                         height: 180,
-                        decoration: const BoxDecoration(
-                            color: hideColor
+                        decoration: const BoxDecoration(color: hideColor),
+                        child: Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SvgPicture.asset('assets/images/logo.svg',
+                                        width: 40.0, height: 40.0),
+                                    const Text(
+                                      "AI Skin Scanner",
+                                      style: TextStyle(
+                                          fontSize: 24.0,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: "DM Sans",
+                                          color: Colors.black),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 24.0,),
+                              const Divider(
+                                color: Color(0XFFF4F4F4),
+                                thickness: 4.0,
+                              ),
+                            ],
+                          ),
                         ),
                       )),
                   Positioned(
@@ -724,30 +774,21 @@ class _WebExternalDocumentState extends State<WebExternalDocument> {
                       child: Container(
                         width: double.infinity,
                         height: MediaQuery.sizeOf(context).height * 0.28,
-                        decoration: const BoxDecoration(
-                            color: hideColor
-                        ),
-                      )),
-                  Positioned(
-                    top: 0,
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 15,
-                        height: double.infinity,
-                        decoration: const BoxDecoration(
-                            color: hideColor
-                        ),
-                      )),
-                  Positioned(
-                      top: 0,
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 100,
-                        height: 10,
-                        decoration: const BoxDecoration(
-                            color: hideColor
+                        decoration: const BoxDecoration(color: hideColor),
+                        child: const Padding(
+                          padding: EdgeInsets.only(bottom: 0.0, right: 32.0, left: 32.0),
+                          child: Center(
+                            child: Text(
+                              "Please note: This product is solely for demo purposes and does not reflect actual requirements. Final specifications will be gathered to meet your specific needs.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "DM Sans",
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
                         ),
                       )),
                 ],

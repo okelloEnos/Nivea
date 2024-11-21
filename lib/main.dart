@@ -1,5 +1,6 @@
+import 'package:dentsu_skin_scanner/web_terms_page.dart';
 import 'package:flutter/material.dart';
-import 'package:nivea/web_terms_page.dart';
+// import 'package:nivea/web_terms_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'DUNNY.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dentsu AI Skin Scanner Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -46,8 +48,6 @@ class MyApp extends StatelessWidget {
           )
       ),
       home: const WebExternalDocument(link: 'https://www.perfectcorp.com/business/showcase/skincare/hd-diagnostics',),
-      // home: WebCardPayment(url: Uri(),),
-      // home: WebViewTest()
     );
   }
 }

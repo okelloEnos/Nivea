@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:label="nivea"
+        android:label="skin-scanner"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
